@@ -1,24 +1,26 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import SplashScreen from '@/components/SplashScreen';
+import { useAuth } from '@/hooks/useAuth';
+import { Slot, useRouter, useSegments } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const segments = useSegments();
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+  useEffect(() => {
+    if (loading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (user && inAuthGroup) {
+      router.replace('/(tabs)');
+    } else if (!user && !inAuthGroup) {
+      router.replace('/(auth)/sign-in');
+    }
+  }, [user, loading]);
+
+  if (loading) return <SplashScreen />;
+
+  return <Slot />;
 }

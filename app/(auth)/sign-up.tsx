@@ -1,6 +1,6 @@
 import { authStyles as styles } from '@/constants/styles';
 import { auth } from '@/services/firebase';
-import { sanitiseEmail } from '@/utils/sanitise';
+import { sanitiseEmail, validatePassword } from '@/utils/sanitise';
 import { Link } from 'expo-router';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRef, useState } from 'react';
@@ -15,9 +15,12 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
-    if (password !== confirmPassword) {
-      return Alert.alert('Error', 'Passwords do not match');
+    const message = validatePassword(password, confirmPassword)
+
+    if (message) {
+      return Alert.alert('Error', message);
     }
+
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -37,10 +40,10 @@ export default function SignUp() {
         autoCapitalize="none" keyboardType="email-address" returnKeyType="next"
         onSubmitEditing={() => passwordRef.current?.focus()} />
       <TextInput ref={passwordRef} style={styles.input} placeholder="Password"
-        value={password} onChangeText={setPassword} secureTextEntry 
+        value={password} onChangeText={setPassword} secureTextEntry
         returnKeyType="next" onSubmitEditing={() => confirmPasswordRef.current?.focus()} />
       <TextInput ref={confirmPasswordRef} style={styles.input} placeholder="Confirm Password"
-        value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry 
+        value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry
         returnKeyType="done" onSubmitEditing={handleSignUp} />
       <TouchableOpacity style={styles.button} onPress={handleSignUp} disabled={loading}>
         <Text style={styles.buttonText}>{loading ? 'Creating account...' : 'Sign Up'}</Text>

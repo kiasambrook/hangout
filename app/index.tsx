@@ -6,7 +6,14 @@ export default function Index() {
 
   if (loading) return null;
 
-  return user
-    ? <Redirect href="/(tabs)" />
-    : <Redirect href="/(auth)/sign-in" />;
+
+  const redirectUser = () => {
+    if (!user) {
+      return <Redirect href="/(auth)/sign-in" />;
+    }
+    return <Redirect href="/(tabs)" />;
+  };
+
+
+  return redirectUser()
 }

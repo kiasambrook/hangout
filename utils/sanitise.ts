@@ -1,6 +1,5 @@
 export const sanitiseEmail = (email: string) => {
-  email.trim().toLowerCase().replace(/\s+/g, '');
-  return email;
+  return email.trim().toLowerCase().replace(/\s+/g, '');
 }
 
 export const validatePassword = (password: string, confirmPassword: string = "") => {

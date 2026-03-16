@@ -22,6 +22,7 @@ export default function ForgotPassword() {
     <View style={styles.container}>
       <Text style={styles.title}>Reset Password</Text>
       <TextInput style={styles.input} placeholder="Email"
+        returnKeyType="done" onSubmitEditing={handleReset}
         value={email} onChangeText={(email) => setEmail(sanitiseEmail(email))}
         autoCapitalize="none" keyboardType="email-address" />
       <TouchableOpacity style={styles.button} onPress={handleReset}>

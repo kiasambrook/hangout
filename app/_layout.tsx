@@ -1,8 +1,8 @@
 import SplashScreen from '@/components/SplashScreen';
 import { useAuth } from '@/hooks/useAuth';
 import { Redirect, Slot, useSegments } from 'expo-router';
-import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import './global.css';
 
 export default function RootLayout() {
   const { user, loading, profileComplete } = useAuth();
@@ -28,14 +28,8 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1">
       <Slot />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

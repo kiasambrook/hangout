@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require("tailwindcss/plugin");
+const customColours = require("./constants/colours");
 
 module.exports = {
   // NOTE: update this to include the paths to all of your component files.
@@ -9,12 +10,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#fcdc5f",
-        light: "#ffffff",
-        dark: "#22252a",
-        "accent-rose": "hsl(330, 70%, 85%)",
-        "accent-sky": "hsl(200, 60%, 80%)",
-        "accent-mint": "hsl(100, 40%, 80%)",
+        ...customColours,
       },
       fontFamily: {
         display: ["Spline Sans", "sans-serif"],
